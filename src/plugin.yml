@@ -1,13 +1,13 @@
 name: MCTrails
-version: 1.0
+version: "1.0"
 author: Jacob Wysko
 main: org.wysko.mctrails.Main
 website: www.wysko.org
-api-version: 1.15
+api-version: "1.15"
 commands:
   toggletrail:
     description: Toggles trails on and off
-    usage: §e/toggle
+    usage: §e/toggletrail
     permission: mctrails.managePersonalTrail
   testparticle:
     description: Tests particle display
