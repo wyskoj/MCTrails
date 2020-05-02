@@ -77,7 +77,6 @@ public class Main extends JavaPlugin implements Listener, Serializable, Inventor
 	@Override
 	public void onEnable() {
 		Bukkit.getServer().getPluginManager().registerEvents(this, this);
-		getLogger().info("[MCTrails] Has been enabled!");
 	}
 	
 	@EventHandler
