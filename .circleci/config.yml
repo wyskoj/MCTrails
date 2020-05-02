@@ -3,7 +3,9 @@ version: 2.1
 orbs:
   maven: circleci/maven@0.0.12
 
-workflows:
+jobs:
   build:
-    - run: mvn clean
-    - run: mvn package
+    working_directory: ~/mctrails
+    steps:
+      - checkout
+      - run: mvn package
