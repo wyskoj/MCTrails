@@ -4,7 +4,5 @@ orbs:
   maven: circleci/maven@0.0.12
 
 workflows:
-  maven_test:
-    jobs:
-      - maven/clean
-      - maven/package
+  build:
+    - run: mvn clean package
