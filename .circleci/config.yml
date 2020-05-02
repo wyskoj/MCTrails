@@ -5,4 +5,5 @@ orbs:
 
 workflows:
   build:
-    - run: mvn clean package
+    - run: mvn clean
+    - run: mvn package
