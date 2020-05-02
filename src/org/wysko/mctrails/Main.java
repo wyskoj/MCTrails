@@ -118,7 +118,7 @@ public class Main extends JavaPlugin implements Listener, Serializable, Inventor
 		return true;
 	}
 	
-	public Inventory getUserTrailGUI(HumanEntity entity) {
+	public Inventory getUserTrailGUI(@NotNull HumanEntity entity) {
 		ParticleDisplayer displayer = displayerByUUID(entity.getUniqueId());
 		if (Objects.isNull(displayer)) {
 			final ParticleDisplayer e = new ParticleDisplayer(new PlayerParticleSettings(entity.getUniqueId(), Particle.HEART));
