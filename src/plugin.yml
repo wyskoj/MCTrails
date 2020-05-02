@@ -5,15 +5,11 @@ main: org.wysko.mctrails.Main
 website: www.wysko.org
 api-version: "1.15"
 commands:
-  toggletrail:
-    description: Toggles trails on and off
-    usage: §e/toggletrail
+  trails:
+    description: Displays configuration options for trails
+    usage: §e/trails
     permission: mctrails.managePersonalTrail
-  testparticle:
-    description: Tests particle display
-    usage: §e/testparticle
-    permission: mctrails.test
-  defaulttrail:
-    description: Sets the player's trail to the default
-    usage: §e/defaulttrail
-    permission: mctrails.test
+    permission-message: You do not have the ability to manage your own trail.
+    aliases:
+      - trail
+      - trailoreenos
