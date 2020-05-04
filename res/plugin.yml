@@ -7,9 +7,41 @@ api-version: "1.15"
 commands:
   trails:
     description: Displays configuration options for trails
-    usage: §e/trails
+    usage: "/trails"
     permission: mctrails.managePersonalTrail
     permission-message: You do not have the ability to manage your own trail.
-    aliases:
-      - trail
-      - trailoreenos
+  createtrail:
+    description: Creates a new trail.
+    usage: "/createtrail [name] [particle] [icon] [rate] [amount]"
+    permission: mctrails.admin
+    permission-message: You do not have the ability to do that.
+  deletetrail:
+    description: Deletes a trail. Anyone who has that trail active will have their trail set to default.
+    usage: "/deletetrail [name]"
+    permission: mctrails.admin
+    permission-message: You do not have the ability to do that.
+  permittrail:
+    description: Allows someone to set a trail as their active trail.
+    usage: "/permittrail [name] [username]"
+    permission: mctrails.admin
+    permission-message: You do not have the ability to do that.
+  revoketrail:
+    description: Disallows someone to set a trail as their active trail.
+    usage: "/revoketrail [name] [username]"
+    permission: mctrails.admin
+    permission-message: You do not have the ability to do that.
+  alltrails:
+    description: View all trails.
+    usage: "/alltrails"
+    permission: mctrails.admin
+    permission-message: You do not have the ability to do that.
+  settrailrate:
+    description: Set the rate of spawn for an existing trail.
+    usage: "/settrailrate [trail] [rate]"
+    permission: mctrails.admin
+    permission-message: You do not have the ability to do that.
+  settrailamount:
+    description: Set the spawn amount for an existing trail.
+    usage: "/settrailamount [trail] [amount]"
+    permission: mctrails.admin
+    permission-message: You do not have the ability to do that.

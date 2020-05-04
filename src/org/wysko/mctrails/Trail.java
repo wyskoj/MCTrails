@@ -24,37 +24,36 @@
 
 package org.wysko.mctrails;
 
-import java.io.Serializable;
-import java.util.UUID;
+import org.bukkit.Material;
+import org.bukkit.Particle;
 
-public class PlayerParticleSettings implements Serializable {
+import java.io.Serializable;
+
+public class Trail implements Serializable {
 	
-	private static final long serialVersionUID = 92653L;
+	private static final long serialVersionUID = 58979L;
 	
+	final public static Trail DEFAULT_TRAIL = new Trail("Default", Particle.SNEEZE, Material.STONE, 200, 1);
 	
-	/**
-	 * The UUID of the Player that these settings apply to.
-	 */
-	final UUID playerUUID;
+	final String trailName;
+	final Particle particle;
+	final Material guiIcon;
+	int rate;
+	int amount;
 	
-	/**
-	 * The trail that should generate around the player.
-	 */
-	Trail trail;
-	
-	/**
-	 * @param playerUUID the UUID of the player that these settings relate to
-	 * @param trail      the Trail to display
-	 */
-	public PlayerParticleSettings(UUID playerUUID, Trail trail) {
-		this.playerUUID = playerUUID;
-		this.trail = trail;
+	public Trail(String trailName, Particle particle, Material guiIcon, int rate, int amount) {
+		this.trailName = trailName;
+		this.particle = particle;
+		this.guiIcon = guiIcon;
+		this.rate = rate;
+		this.amount = amount;
 	}
 	
 	@Override
 	public String toString() {
-		return "PlayerParticleSettings{" + "playerUUID=" + playerUUID +
-				", trail=" + trail +
+		return "Trail{" + "trailName='" + trailName + '\'' +
+				", particle=" + particle +
+				", guiIcon=" + guiIcon +
 				'}';
 	}
 }

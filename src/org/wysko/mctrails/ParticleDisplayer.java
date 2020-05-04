@@ -29,6 +29,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serializable;
 import java.util.Random;
 import java.util.StringJoiner;
 import java.util.concurrent.Executors;
@@ -36,17 +37,20 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class ParticleDisplayer {
+public class ParticleDisplayer implements Serializable {
+	
+	
+	private static final long serialVersionUID = 31415L;
 	
 	/**
 	 * The {@link PlayerParticleSettings} related to this ParticleDisplayer
 	 */
 	PlayerParticleSettings settings;
 	boolean enabledOnQuit = false;
-	private ScheduledExecutorService executorService;
+	transient private ScheduledExecutorService executorService;
 	private boolean looping = false;
-	private Future<?> future;
-	final Runnable loopParticles = () -> {
+	transient private Future<?> future;
+	transient final Runnable loopParticles = () -> {
 		Random random = new Random();
 		Player player = Bukkit.getPlayer(settings.playerUUID);
 		assert player != null;
@@ -55,10 +59,13 @@ public class ParticleDisplayer {
 			return;
 		}
 		Location location = player.getLocation();
-		player.spawnParticle(settings.particle,
-				location.getX() + (random.nextDouble() - 0.5),
-				location.getY() + (random.nextDouble() - 0.5),
-				location.getZ() + (random.nextDouble() - 0.5), 1);
+		for (int i = 0; i < settings.trail.amount; i++) {
+			player.spawnParticle(settings.trail.particle,
+					location.getX() + (random.nextDouble() - 0.5),
+					location.getY() + (random.nextDouble() - 0.5),
+					location.getZ() + (random.nextDouble() - 0.5), 1);
+		}
+		
 	};
 	
 	public ParticleDisplayer(PlayerParticleSettings settings) {
@@ -67,13 +74,19 @@ public class ParticleDisplayer {
 	}
 	
 	void startLoop() {
-		future = executorService.scheduleAtFixedRate(loopParticles, 0, 200, TimeUnit.MILLISECONDS);
+		future = executorService.scheduleAtFixedRate(loopParticles, 0, settings.trail.rate, TimeUnit.MILLISECONDS);
 		looping = true;
 	}
 	
 	void stopLoop() {
 		future.cancel(true);
 		looping = false;
+	}
+	
+	void safeRestart() {
+		if (looping)
+			stopLoop();
+		startLoop();
 	}
 	
 	boolean isLooping() {
