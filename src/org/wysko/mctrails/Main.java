@@ -168,9 +168,14 @@ public class Main extends JavaPlugin implements Listener, Serializable, Inventor
 					"with this plugin, or you have deleted the db files.");
 		}
 		
-		if (!allTrails.contains(Trail.DEFAULT_TRAIL)) {
-			allTrails.add(Trail.DEFAULT_TRAIL);
+		boolean found = false;
+		for (Trail trail : allTrails) {
+			if (trail.trailName.equalsIgnoreCase("default")) {
+				found = true;
+				break;
+			}
 		}
+		if (!found) allTrails.add(Trail.DEFAULT_TRAIL);
 		Bukkit.getServer().getPluginManager().registerEvents(this, this);
 	}
 	
@@ -538,6 +543,7 @@ public class Main extends JavaPlugin implements Listener, Serializable, Inventor
 		if (Objects.isNull(displayer)) {
 			final ParticleDisplayer e = new ParticleDisplayer(new PlayerParticleSettings(uuid, Trail.DEFAULT_TRAIL));
 			particleDisplayers.put(uuid, e);
+			
 			displayer = e;
 		}
 		switch (screen) {
@@ -617,6 +623,7 @@ public class Main extends JavaPlugin implements Listener, Serializable, Inventor
 	
 	@EventHandler
 	public void onInventoryClick(final InventoryClickEvent event) throws IOException {
+		if (event.getClickedInventory() == null) return;
 		HumanEntity player = event.getWhoClicked();
 		final UUID uuid = player.getUniqueId();
 		final Inventory openMenu = lastOpenMenu.get(uuid);
