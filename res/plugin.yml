@@ -1,5 +1,5 @@
 name: MCTrails
-version: "1.0-SNAPSHOT"
+version: "1.1"
 author: Jacob Wysko
 main: org.wysko.mctrails.Main
 website: www.wysko.org
