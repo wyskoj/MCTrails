@@ -35,6 +35,7 @@ import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -50,6 +51,20 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 public class Main extends JavaPlugin implements Listener, Serializable, InventoryHolder, TabCompleter {
+	
+	final String GUI_DISABLE = ChatColor.RED + "Disable";
+	final String GUI_ENABLE = ChatColor.GREEN + "Enable";
+	final String GUI_LIST = "Change trail";
+	final File folder = new File("plugins/MCTrails");
+	final File playerAvailableTrailsFile = new File("plugins/MCTrails/player_perms.db");
+	final File allTrailsFile = new File("plugins/MCTrails/trails.db");
+	final File uuidUsernameFile = new File("plugins/MCTrails/users.db");
+	HashMap<UUID, ParticleDisplayer> particleDisplayers = new HashMap<>();
+	HashMap<UUID, ArrayList<Trail>> playerAvailableTrails = new HashMap<>();
+	HashMap<UUID, Inventory> lastOpenMenu = new HashMap<>();
+	HashMap<UUID, ConfigScreen> lastOpenMenuType = new HashMap<>();
+	List<Trail> allTrails = new ArrayList<>();
+	HashMap<String, UUID> uuidUsername = new HashMap<>();
 	
 	public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
 		int argNum = args.length;
@@ -120,21 +135,6 @@ public class Main extends JavaPlugin implements Listener, Serializable, Inventor
 				return new ArrayList<>();
 		}
 	}
-	
-	final String GUI_DISABLE = ChatColor.RED + "Disable";
-	final String GUI_ENABLE = ChatColor.GREEN + "Enable";
-	final String GUI_LIST = "Change trail";
-	final File folder = new File("plugins/MCTrails");
-	final File playerAvailableTrailsFile = new File("plugins/MCTrails/player_perms.db");
-	final File allTrailsFile = new File("plugins/MCTrails/trails.db");
-	final File uuidUsernameFile = new File("plugins/MCTrails/users.db");
-	
-	HashMap<UUID, ParticleDisplayer> particleDisplayers = new HashMap<>();
-	HashMap<UUID, ArrayList<Trail>> playerAvailableTrails = new HashMap<>();
-	HashMap<UUID, Inventory> lastOpenMenu = new HashMap<>();
-	HashMap<UUID, ConfigScreen> lastOpenMenuType = new HashMap<>();
-	List<Trail> allTrails = new ArrayList<>();
-	HashMap<String, UUID> uuidUsername = new HashMap<>();
 	
 	void writeAllVarsToFile() throws IOException {
 		if (!folder.exists()) folder.mkdir();
@@ -623,14 +623,31 @@ public class Main extends JavaPlugin implements Listener, Serializable, Inventor
 	
 	@EventHandler
 	public void onInventoryClick(final InventoryClickEvent event) throws IOException {
-		if (event.getClickedInventory() == null) return;
+		final Inventory clickedInventory = event.getClickedInventory();
+		if (clickedInventory == null) return;
+		
 		HumanEntity player = event.getWhoClicked();
+		
 		final UUID uuid = player.getUniqueId();
 		final Inventory openMenu = lastOpenMenu.get(uuid);
 		final ConfigScreen openMenuType = lastOpenMenuType.get(uuid);
-		if (!event.getClickedInventory().equals(openMenu)) {
+		
+		// Ignore non-menu events
+		if (!clickedInventory.equals(openMenu)) {
 			return;
 		}
+		// Prevent item placement
+		InventoryAction action = event.getAction();
+		System.out.println(action);
+		switch (action) {
+			case PLACE_ALL:
+			case PLACE_ONE:
+			case PLACE_SOME:
+			case SWAP_WITH_CURSOR:
+				event.setCancelled(true);
+				return;
+		}
+		
 		ItemStack clickedStack = event.getCurrentItem();
 		if (clickedStack != null) {
 			ParticleDisplayer displayer = particleDisplayers.get(uuid);
