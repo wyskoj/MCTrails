@@ -35,7 +35,6 @@ import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -386,6 +385,9 @@ public class Main extends JavaPlugin implements Listener, Serializable, Inventor
 			}
 			playerAvailableTrails.get(playerUUID).add(trailToAdd);
 			sender.sendMessage(String.format("§a%s can now use %s.", playerName, trailName));
+			Bukkit.getPlayer(playerUUID).sendMessage(
+					String.format("§aYou can now use the %s trail.", trailName)
+			);
 			try {
 				writeAllVarsToFile();
 			} catch (IOException e) {
@@ -632,21 +634,40 @@ public class Main extends JavaPlugin implements Listener, Serializable, Inventor
 		final Inventory openMenu = lastOpenMenu.get(uuid);
 		final ConfigScreen openMenuType = lastOpenMenuType.get(uuid);
 		
-		// Ignore non-menu events
-		if (!clickedInventory.equals(openMenu)) {
-			return;
-		}
-		// Prevent item placement
-		InventoryAction action = event.getAction();
-		System.out.println(action);
-		switch (action) {
-			case PLACE_ALL:
-			case PLACE_ONE:
-			case PLACE_SOME:
-			case SWAP_WITH_CURSOR:
+		if (event.getInventory().equals(openMenu)) {
+			if (!clickedInventory.equals(openMenu)) {
 				event.setCancelled(true);
-				return;
+			}
 		}
+
+
+//		// Prevent item placement
+//		if (event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY && event.getInventory().equals(openMenu)) {
+//			event.setCancelled(true);
+//		}
+//
+//		// Ignore non-menu events
+//		if (!clickedInventory.equals(openMenu)) {
+//			return;
+//		}
+//
+//		InventoryAction action = event.getAction();
+//		System.out.println(action);
+//		switch (action) {
+//			case PLACE_ALL:
+//			case PLACE_ONE:
+//			case PLACE_SOME:
+//			case SWAP_WITH_CURSOR:
+//			case HOTBAR_MOVE_AND_READD:
+//			case HOTBAR_SWAP:
+//			case MOVE_TO_OTHER_INVENTORY:
+//			case DROP_ALL_CURSOR:
+//			case DROP_ONE_CURSOR:
+//			case DROP_ALL_SLOT:
+//			case DROP_ONE_SLOT:
+//				event.setCancelled(true);
+//				return;
+//		}
 		
 		ItemStack clickedStack = event.getCurrentItem();
 		if (clickedStack != null) {

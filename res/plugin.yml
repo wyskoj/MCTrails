@@ -3,7 +3,7 @@ version: "1.1"
 author: Jacob Wysko
 main: org.wysko.mctrails.Main
 website: www.wysko.org
-api-version: "1.15"
+api-version: "1.16"
 commands:
   trails:
     description: Displays configuration options for trails
