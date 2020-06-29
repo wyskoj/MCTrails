@@ -33,20 +33,24 @@ public class Trail implements Serializable {
 	
 	private static final long serialVersionUID = 58979L;
 	
-	final public static Trail DEFAULT_TRAIL = new Trail("Default", Particle.SNEEZE, Material.STONE, 200, 1);
+	final public static Trail DEFAULT_TRAIL = new Trail("Default", Particle.SNEEZE, Material.STONE, 200, 1, 1.0, 0.0);
 	
 	final String trailName;
 	final Particle particle;
 	final Material guiIcon;
 	int rate;
 	int amount;
+	double radius;
+	double yOffset;
 	
-	public Trail(String trailName, Particle particle, Material guiIcon, int rate, int amount) {
+	public Trail(String trailName, Particle particle, Material guiIcon, int rate, int amount, double radius, double yOffset) {
 		this.trailName = trailName;
 		this.particle = particle;
 		this.guiIcon = guiIcon;
 		this.rate = rate;
 		this.amount = amount;
+		this.radius = radius;
+		this.yOffset = yOffset;
 	}
 	
 	@Override

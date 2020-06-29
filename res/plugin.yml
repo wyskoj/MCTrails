@@ -12,7 +12,7 @@ commands:
     permission-message: You do not have the ability to manage your own trail.
   createtrail:
     description: Creates a new trail.
-    usage: "/createtrail [name] [particle] [icon] [rate] [amount]"
+    usage: "/createtrail [name] [particle] [icon] [rate] [amount] [radius] [y-offset]"
     permission: mctrails.admin
     permission-message: You do not have the ability to do that.
   deletetrail:

@@ -61,9 +61,9 @@ public class ParticleDisplayer implements Serializable {
 		Location location = player.getLocation();
 		for (int i = 0; i < settings.trail.amount; i++) {
 			Bukkit.getServer().getWorld(player.getWorld().getName()).spawnParticle(settings.trail.particle,
-					location.getX() + (random.nextDouble() - 0.5),
-					location.getY() + (random.nextDouble() - 0.5),
-					location.getZ() + (random.nextDouble() - 0.5), 1);
+					location.getX() + (random.nextDouble() - 0.5) * settings.trail.radius,
+					location.getY() + ((random.nextDouble() - 0.5) * settings.trail.radius) + settings.trail.yOffset,
+					location.getZ() + (random.nextDouble() - 0.5) * settings.trail.radius, 1);
 		}
 		
 	};

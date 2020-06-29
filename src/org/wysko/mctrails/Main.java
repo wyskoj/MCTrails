@@ -239,7 +239,7 @@ public class Main extends JavaPlugin implements Listener, Serializable, Inventor
 				e.printStackTrace();
 			}
 		} else if ("createtrail".equals(commandText)) {
-			if (args.length != 5) {
+			if (args.length != 7) {
 				return false;
 			}
 			String trailname = args[0];
@@ -270,6 +270,8 @@ public class Main extends JavaPlugin implements Listener, Serializable, Inventor
 			}
 			int rate;
 			int amount;
+			double radius;
+			double yOffset;
 			try {
 				rate = Integer.parseInt(args[3]);
 			} catch (NumberFormatException e) {
@@ -282,6 +284,18 @@ public class Main extends JavaPlugin implements Listener, Serializable, Inventor
 				sender.sendMessage("§c" + args[4] + " is not a valid number.");
 				return true;
 			}
+			try {
+				radius = Double.parseDouble(args[5]);
+			} catch (NumberFormatException e) {
+				sender.sendMessage("§c" + args[5] + " is not a valid number.");
+				return true;
+			}
+			try {
+				yOffset = Double.parseDouble(args[6]);
+			} catch (NumberFormatException e) {
+				sender.sendMessage("§c" + args[6] + " is not a valid number.");
+				return true;
+			}
 			if (amount <= 0) {
 				sender.sendMessage("§c" + args[3] + " is not a valid number.");
 				return true;
@@ -290,7 +304,11 @@ public class Main extends JavaPlugin implements Listener, Serializable, Inventor
 				sender.sendMessage("§c" + args[4] + " is not a valid number.");
 				return true;
 			}
-			allTrails.add(new Trail(trailname, particle, icon, rate, amount));
+			if (radius <= 0) {
+				sender.sendMessage("§c" + args[5] + " is not a valid number.");
+				return true;
+			}
+			allTrails.add(new Trail(trailname, particle, icon, rate, amount, radius, yOffset));
 			sender.sendMessage("§aTrail \"" + trailname + "\" has been created.");
 			try {
 				writeAllVarsToFile();
