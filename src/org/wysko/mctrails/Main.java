@@ -657,6 +657,10 @@ public class Main extends JavaPlugin implements Listener, Serializable, Inventor
 				event.setCancelled(true);
 			}
 		}
+		
+		if (!event.getClickedInventory().equals(openMenu)) {
+			return;
+		}
 
 
 //		// Prevent item placement

@@ -34,7 +34,7 @@
 
     <groupId>org.wysko</groupId>
     <artifactId>MCTrails</artifactId>
-    <version>1.1</version>
+    <version>1.2</version>
     <build>
 
         <finalName>${project.artifactId}-${project.version}</finalName>
